@@ -5,6 +5,7 @@ import io.github.arch.arquiteturaspring.montadora.Chave;
 import io.github.arch.arquiteturaspring.montadora.HondaHRV;
 import io.github.arch.arquiteturaspring.montadora.Motor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 public class TesteFabricaController {
 
     @Autowired
+    //@Qualifier("motorTurbo")
+    @Aspirado
     private Motor motor;
 
     @PostMapping
