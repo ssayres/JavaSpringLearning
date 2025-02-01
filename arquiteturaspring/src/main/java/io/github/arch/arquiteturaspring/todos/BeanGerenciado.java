@@ -1,5 +1,6 @@
 package io.github.arch.arquiteturaspring.todos;
 
+import io.github.arch.arquiteturaspring.AppProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Lazy;
@@ -20,6 +21,9 @@ import org.springframework.web.context.WebApplicationContext;
 public class BeanGerenciado {
 
     @Autowired
+    private AppProperties properties;
+
+    @Autowired
     private TodoValidator validator;
 
     public void utilizar(){
@@ -28,6 +32,7 @@ public class BeanGerenciado {
     }
     @Autowired
     public BeanGerenciado(TodoValidator validator){
+        //String variavel = properties.getVariavel();
         this.validator = validator;
     }
     @Autowired

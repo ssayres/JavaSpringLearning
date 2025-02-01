@@ -12,6 +12,7 @@ public class MontadoraConfiguration {
     @Bean(name = "motorAspirado")
 
     public Motor motorAspirado(){
+        //public Motor motorAspirado(@Value("${app.montadora.motor-padrao}") Integer cavalos){ utiliando propriedades do yml
         var motor = new Motor();
         motor.setCavalos(120);
         motor.setCilindros(4);
