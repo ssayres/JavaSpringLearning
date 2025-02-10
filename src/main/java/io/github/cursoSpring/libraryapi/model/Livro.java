@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -30,8 +31,8 @@ public class Livro {
     @Column(name="genero", length= 30, nullable = false)
     private GeneroLivro genero;
 
-    @Column(name= "preco", precision = 18, scale = 2)
-    private Double preco;
+    @Column(name= "preco", precision = 18, scale=2)
+    private BigDecimal preco;
 
     @ManyToOne // com join Column tem que especificar o tipo de relacionamento -> ManytoOne nesse caso
     @JoinColumn(name = "id_autor")
