@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -14,51 +15,30 @@ import java.util.UUID;
 @Setter
 public class Autor {
 
+    @Getter
+    @Setter
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Setter
+    @Getter
     @Column(name = "nome", length = 100, nullable= false) // atributos como length nao são necessarios pois o banco já delimita é opcional
     private String nome;
 
+    @Setter
+    @Getter
     @Column(name= "data_nascimento", nullable = false)
     private LocalDate dataNascimento;
 
+    @Setter
+    @Getter
     @Column(name = "nacionalidade", length = 50, nullable = false)
     private String nacionalidade;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public String getNacionalidade() {
-        return nacionalidade;
-    }
-
-    public void setNacionalidade(String nacionalidade) {
-        this.nacionalidade = nacionalidade;
-    }
+    @OneToMany(mappedBy = "autor") // dentro da entidade livro - a relação é através da propriedade autor
+    private List<Livro> livros;
 
 
 }
