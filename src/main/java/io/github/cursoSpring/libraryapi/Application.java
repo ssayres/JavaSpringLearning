@@ -11,21 +11,19 @@ import java.time.LocalDate;
 public class Application {
 
 	public static void main(String[] args) {
-		var context =SpringApplication.run(Application.class, args);
-		AutorRepository repository = context.getBean(AutorRepository.class);
+		SpringApplication.run(Application.class, args);
 
-		exemploSalvarRegistro(repository);
+		//exemploSalvarRegistro(repository);
 	}
-	public static void exemploSalvarRegistro(AutorRepository autorRepository){
-		Autor autor = new Autor();
-		autor.setNome("José");
-		autor.setNacionalidade("Brasileira");
-		autor.setDataNascimento(LocalDate.of(1950,1,31));
+	//public static void exemploSalvarRegistro(AutorRepository autorRepository){
+		//Autor autor = new Autor();
+		//autor.setNome("José");
+	//	autor.setNacionalidade("Brasileira");
+	//	autor.setDataNascimento(LocalDate.of(1950,1,31));
 
-		var autorSalvo = autorRepository.save(autor);
-		System.out.println("Autor Salvo " + autorSalvo);
+	//	var autorSalvo = autorRepository.save(autor);
+	//	System.out.println("Autor Salvo " + autorSalvo);
 
-
-	}
+	//}
 
 }

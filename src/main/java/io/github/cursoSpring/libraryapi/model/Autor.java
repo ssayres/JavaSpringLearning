@@ -12,6 +12,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -50,6 +51,9 @@ public class Autor {
     @Column(name = "nacionalidade", length = 50, nullable = false)
 
     private String nacionalidade;
+
+    @Transient // uma porpriedade que não é considerada uma coluna, para ignorar a propriedade livros por enquanto
+    private List<Livro> livros;
 
 
     public UUID getId() {
