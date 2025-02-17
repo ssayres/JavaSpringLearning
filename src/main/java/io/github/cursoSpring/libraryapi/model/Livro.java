@@ -34,7 +34,9 @@ public class Livro {
     @Column(name= "preco", precision = 18, scale=2)
     private BigDecimal preco;
 
-    @ManyToOne // com join Column tem que especificar o tipo de relacionamento -> ManytoOne nesse caso
+
+    // com join Column tem que especificar o tipo de relacionamento -> ManytoOne nesse caso
+    @ManyToOne //(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_autor")
     private Autor autor;
     //criando a chave estrangeira baseando em objeto relacional

@@ -40,4 +40,51 @@ class LivroRepositoryTest {
 
 
     }
+
+    @Test
+    void salvarCascadeTest(){ // só funciona com  @ManyToOne(cascade = CascadeType.ALL) na entidade livro
+        Livro livro = new Livro();
+        livro.setIsbn("98887-84874");
+        livro.setPreco(BigDecimal.valueOf(100));
+        livro.setGenero(GeneroLivro.FICCAO);
+        livro.setTitulo("UFO EXPLOSIVO");
+        livro.setDataPublicacao(LocalDate.of(1980, 1 ,28));
+
+        Autor autor = new Autor();
+        autor.setNome("Bruno");
+        autor.setNacionalidade("Brasileira");
+        autor.setDataNascimento(LocalDate.of(1951, 1, 31));
+
+
+        livro.setAutor(autor);
+
+        repository.save(livro);
+
+
+
+    }
+
+    @Test
+    void salvarSemCascadeTest(){
+        Livro livro = new Livro();
+        livro.setIsbn("98887-84874");
+        livro.setPreco(BigDecimal.valueOf(100));
+        livro.setGenero(GeneroLivro.FICCAO);
+        livro.setTitulo("UFO EXPLOSIVO");
+        livro.setDataPublicacao(LocalDate.of(1980, 1 ,28));
+
+        Autor autor = new Autor();
+        autor.setNome("Bruno");
+        autor.setNacionalidade("Brasileira");
+        autor.setDataNascimento(LocalDate.of(1951, 1, 31));
+
+        autorRepository.save(autor);
+
+        livro.setAutor(autor);
+
+        repository.save(livro);
+
+
+
+    }
 }
