@@ -83,8 +83,30 @@ class LivroRepositoryTest {
         livro.setAutor(autor);
 
         repository.save(livro);
+    }
 
+    @Test
+    void atualizarAutorDoLivro(){
+        UUID id = UUID.fromString("3a231377-a9f3-48b4-9633-6a10ff1677ad");
+        var livroParaAtualizar = repository.findById(id).orElse(null);
 
+        UUID idAutor = UUID.fromString("2023e711-9df1-46aa-a7b5-2df6a4d8661a");
+        Autor joseBezerra = autorRepository.findById(idAutor).orElse(null);
 
+        livroParaAtualizar.setAutor(joseBezerra);
+
+        repository.save(livroParaAtualizar);
+    }
+
+    @Test
+    void deletar(){
+        UUID id = UUID.fromString("3a231377-a9f3-48b4-9633-6a10ff1677ad");
+        repository.deleteById(id);
+    }
+
+    @Test
+    void deletarCascade(){ // habilitando o cascade la na entidade livro ele apaga o autor junto
+        UUID id = UUID.fromString("3a231377-a9f3-48b4-9633-6a10ff1677ad");
+        repository.deleteById(id);
     }
 }
