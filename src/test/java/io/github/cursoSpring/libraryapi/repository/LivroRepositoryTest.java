@@ -3,6 +3,7 @@ package io.github.cursoSpring.libraryapi.repository;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.model.GeneroLivro;
 import io.github.cursoSpring.libraryapi.model.Livro;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -108,5 +109,17 @@ class LivroRepositoryTest {
     void deletarCascade(){ // habilitando o cascade la na entidade livro ele apaga o autor junto
         UUID id = UUID.fromString("3a231377-a9f3-48b4-9633-6a10ff1677ad");
         repository.deleteById(id);
+    }
+
+    @Test
+    @Transactional // essa transação abre execuções no banco
+    void buscarLivroTest(){
+        UUID id = UUID.fromString("cfcf1e42-6248-493e-aa8c-d26bf28011c7");
+        Livro livro = repository.findById(id).orElse(null);
+
+        System.out.println("Livro :");
+        System.out.println(livro.getTitulo());
+        System.out.println("Autor :");
+        System.out.println(livro.getAutor().getNome());
     }
 }

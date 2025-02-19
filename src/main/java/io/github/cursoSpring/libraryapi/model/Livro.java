@@ -36,7 +36,11 @@ public class Livro {
 
 
     // com join Column tem que especificar o tipo de relacionamento -> ManytoOne nesse caso
-    @ManyToOne //(cascade = CascadeType.ALL)
+    @ManyToOne (
+            //(cascade = CascadeType.ALL)
+            //fetch = FetchType.LAZY // dessa forma só traz os dados do livro e não do autor/ EAGER traz o fetch do autor junto / Padrão é EAGER
+            fetch = FetchType.EAGER
+    )
     @JoinColumn(name = "id_autor")
     private Autor autor;
     //criando a chave estrangeira baseando em objeto relacional
