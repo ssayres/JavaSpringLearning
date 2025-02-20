@@ -52,9 +52,20 @@ public class Autor {
 
     private String nacionalidade;
 
-    @Transient // uma porpriedade que não é considerada uma coluna, para ignorar a propriedade livros por enquanto
+
+    @OneToMany(mappedBy = "autor")
+    //@OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+        //@Transient // uma porpriedade que não é considerada uma coluna, para ignorar a propriedade livros por enquanto
     private List<Livro> livros;
 
+
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
+    }
 
     public UUID getId() {
 

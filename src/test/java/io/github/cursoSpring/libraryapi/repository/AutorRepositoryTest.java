@@ -1,12 +1,16 @@
 package io.github.cursoSpring.libraryapi.repository;
 
 import io.github.cursoSpring.libraryapi.model.Autor;
+import io.github.cursoSpring.libraryapi.model.GeneroLivro;
+import io.github.cursoSpring.libraryapi.model.Livro;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,6 +20,9 @@ public class AutorRepositoryTest {
 
     @Autowired
     AutorRepository repository;
+
+    @Autowired
+    LivroRepository lvrepository;
     @Test
     public void salvarTest(){
         Autor autor = new Autor();
@@ -88,5 +95,35 @@ public class AutorRepositoryTest {
         var id = UUID.fromString("48d48326-60c7-4c85-922e-f5efe90ff06b");
         var autor = repository.findById(id).get();
         repository.delete(autor); // deleta por objeto e não por id
+    }
+
+    @Test
+    void salvarAutorComLivrosTest(){
+        Autor autor = new Autor();
+        autor.setNome("Antonio");
+        autor.setNacionalidade("Brasileira");
+        autor.setDataNascimento(LocalDate.of(1970,1,31));
+
+        Livro livro = new Livro();
+        livro.setIsbn("98887-84874");
+        livro.setPreco(BigDecimal.valueOf(74));
+        livro.setGenero(GeneroLivro.MISTERIO);
+        livro.setTitulo("Casa assombrada");
+        livro.setDataPublicacao(LocalDate.of(1999, 1 ,28));
+
+        Livro livro2 = new Livro();
+        livro2.setIsbn("98647-84874");
+        livro2.setPreco(BigDecimal.valueOf(74));
+        livro2.setGenero(GeneroLivro.MISTERIO);
+        livro2.setTitulo("Casa assombrada 2");
+        livro2.setDataPublicacao(LocalDate.of(2005, 1 ,28));
+
+        autor.setLivros(new ArrayList<>());
+        autor.getLivros().add(livro);
+        autor.getLivros().add(livro2);
+
+        repository.save(autor);
+
+        lvrepository.saveAll(autor.getLivros());
     }
 }
