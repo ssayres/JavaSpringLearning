@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Setter
 
-@ToString
+@ToString(exclude = "livros")
 
 public class Autor {
 

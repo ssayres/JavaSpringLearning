@@ -3,6 +3,7 @@ package io.github.cursoSpring.libraryapi.repository;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.model.GeneroLivro;
 import io.github.cursoSpring.libraryapi.model.Livro;
+import jakarta.transaction.Transactional;
 import lombok.ToString;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,5 +126,18 @@ public class AutorRepositoryTest {
         repository.save(autor);
 
         lvrepository.saveAll(autor.getLivros());
+    }
+
+    @Test
+    @Transactional
+    void listarLivrosAutor(){
+        var id = UUID.fromString("ce57d79b-12fd-4f05-a76a-d92dea6a0218");
+        var autor = repository.findById(id).get();
+
+        // buscar os livros do autor
+
+        List<Livro> livrosLista = lvrepository.findByAutor(autor);
+        autor.setLivros(livrosLista);
+        autor.getLivros().forEach(System.out::println);
     }
 }

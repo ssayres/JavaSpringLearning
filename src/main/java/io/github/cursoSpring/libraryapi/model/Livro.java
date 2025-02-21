@@ -39,7 +39,7 @@ public class Livro {
     @ManyToOne (
             //(cascade = CascadeType.ALL)
             //fetch = FetchType.LAZY // dessa forma só traz os dados do livro e não do autor/ EAGER traz o fetch do autor junto / Padrão é EAGER
-            fetch = FetchType.EAGER
+            fetch = FetchType.LAZY
     )
     @JoinColumn(name = "id_autor")
     private Autor autor;
