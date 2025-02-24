@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -124,4 +125,25 @@ class LivroRepositoryTest {
         System.out.println("Autor :");
         System.out.println(livro.getAutor().getNome());
     }
+
+
+    @Test
+    void pesquisarPorTituloTest(){
+        List<Livro> lista = repository.findByTitulo("UFO EXPLOSIVO");
+        lista.forEach(System.out::println);
+    }
+    @Test
+    void pesquisarPorIsbnTest(){
+        List<Livro> lista = repository.findByIsbn("98887-84875");
+        lista.forEach(System.out::println);
+    }
+
+    @Test
+    void pesquisarPorTituloePreco(){
+        var preco = BigDecimal.valueOf(74);
+        var tituloPesquisa = "Casa assombrada 2";
+        List<Livro> lista = repository.findByTituloAndPreco(tituloPesquisa,preco);
+        lista.forEach(System.out::println);
+    }
+
 }
