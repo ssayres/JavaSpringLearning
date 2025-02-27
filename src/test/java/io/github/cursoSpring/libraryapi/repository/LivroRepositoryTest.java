@@ -13,6 +13,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+
+/**
+ * @see LivroRepositoryTest
+ */
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -144,6 +148,30 @@ class LivroRepositoryTest {
         var tituloPesquisa = "Casa assombrada 2";
         List<Livro> lista = repository.findByTituloAndPreco(tituloPesquisa,preco);
         lista.forEach(System.out::println);
+    }
+
+    @Test
+    void listarLivrosComQueryJPQL(){
+        var resultado = repository.listarTodosOrdenadoPorTituloAndPreco();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarAutoresDosLivros(){
+        var resultado = repository.listarAutoresDosLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarNomesDiferentesLivros(){
+        var resultado = repository.listarNomesDiferentesLivros();
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarGenerosAutoresBrasileiros(){
+        var resultado = repository.listarGenerosAutoresBrasileiros();
+        resultado.forEach(System.out::println);
     }
 
 }
