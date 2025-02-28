@@ -174,4 +174,17 @@ class LivroRepositoryTest {
         resultado.forEach(System.out::println);
     }
 
+    // named parameters -> parametros nomeados
+    @Test
+    void listarPorGeneroQueryParamTest(){
+        var resultado = repository.findByGenero(GeneroLivro.FICCAO, "preco");
+        resultado.forEach(System.out::println);
+    }
+
+    @Test
+    void listarPOrGeneroPositionalParamTest(){
+        var resultado = repository.findByPositionalParameters(GeneroLivro.FICCAO, "preco");
+        resultado.forEach(System.out::println);
+    }
+
 }

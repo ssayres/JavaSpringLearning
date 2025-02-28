@@ -1,9 +1,11 @@
 package io.github.cursoSpring.libraryapi.repository;
 
 import io.github.cursoSpring.libraryapi.model.Autor;
+import io.github.cursoSpring.libraryapi.model.GeneroLivro;
 import io.github.cursoSpring.libraryapi.model.Livro;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -53,6 +55,14 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> { // alt + E
             """) // """ quebra a linha sem precisar concatenar
     List<String> listarGenerosAutoresBrasileiros();
 
+    // named parameters -> parametros nomeados
+    @Query("select l from Livro l where l.genero = :genero order by :paramOrdenacao")
+    List<Livro> findByGenero(@Param("genero") GeneroLivro generoLivro, @Param("paramOrdenacao") String nomePropriedade);
+
+    // positional parameters
+    @Query("select l from Livro l where l.genero = ?1 order by ?2") // ?numero é a sintaxe de parametro
+    List<Livro> findByPositionalParameters(@Param("genero") GeneroLivro generoLivro,
+                                           @Param("paramOrdenacao") String nomePropriedade);
 
 
 
