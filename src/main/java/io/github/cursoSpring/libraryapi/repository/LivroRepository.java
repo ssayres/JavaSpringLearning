@@ -3,7 +3,9 @@ package io.github.cursoSpring.libraryapi.repository;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.model.GeneroLivro;
 import io.github.cursoSpring.libraryapi.model.Livro;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -64,6 +66,16 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> { // alt + E
     List<Livro> findByPositionalParameters(@Param("genero") GeneroLivro generoLivro,
                                            @Param("paramOrdenacao") String nomePropriedade);
 
+
+    @Modifying
+    @Transactional // necessario pra inser update ou delete
+    @Query("delete  from Livro  where genero = ?1")
+    void deletarPorGenero(GeneroLivro genero);
+
+    @Modifying
+    @Transactional // necessario pra inser update ou delete
+    @Query("update  Livro  set dataPublicacao = ?1")
+    void atualizarDataPublicacao(LocalDate novaData);
 
 
 }
