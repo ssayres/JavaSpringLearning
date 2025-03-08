@@ -196,6 +196,14 @@ class LivroRepositoryTest {
     @Test
     void atualizarDataPublicacao(){
         repository.atualizarDataPublicacao(LocalDate.of(2000, 1,1));
+    }
 
+    @Test
+    @Transactional
+    void atualizarSemAtualizar(){
+        var livro = repository.findById(UUID.fromString("4edfde9b-c0d5-4c4b-9758-ea949b38eaec")).orElse(null);
+        livro.setDataPublicacao(LocalDate.of(2024,12,12));
+
+        //com o transactional, com a mudança do estado de entidade ja muda no banco sem usar o save
     }
 }

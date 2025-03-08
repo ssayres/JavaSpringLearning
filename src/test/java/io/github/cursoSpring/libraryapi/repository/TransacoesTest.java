@@ -1,16 +1,16 @@
 package io.github.cursoSpring.libraryapi.repository;
 
 import io.github.cursoSpring.libraryapi.service.TransacaoService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class TransacoesTeste {
+public class TransacoesTest {
 
     @Autowired
     AutorRepository autorRepository;
+    @Autowired
     TransacaoService transacaoService;
 
     /**
@@ -24,6 +24,14 @@ public class TransacoesTeste {
     public void transacaoTeste(){
 
         transacaoService.executar();
+
+    }
+
+    @Test
+
+    public void transacaoTesteSemAtualizar(){
+
+        transacaoService.atualizarSemAtualizar();
 
     }
 
