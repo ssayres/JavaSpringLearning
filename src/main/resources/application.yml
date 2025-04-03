@@ -9,7 +9,8 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
+      # ddl-auto: update
     properties:
       hibernate.format_sql: true
       #ddl-auto: update subir o banco direto pela construção das models, dando um run direto em Application
