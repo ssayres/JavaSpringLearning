@@ -1,6 +1,7 @@
 package io.github.cursoSpring.libraryapi.controller;
 
 import io.github.cursoSpring.libraryapi.controller.dto.AutorDTO;
+import io.github.cursoSpring.libraryapi.controller.dto.ErroResposta;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.service.AutorService;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,8 @@ public class AutorController {
                 .path("/{id}")
                 .buildAndExpand(autorEntidade.getId()).toUri();
         return ResponseEntity.created(location).build();
+        //ErroResposta erro = ErroResposta.conflito("Autor já cadastrado!");
+        //return ResponseEntity.status(erro.status().body(erro));
     }
 
     @GetMapping("{id}")
