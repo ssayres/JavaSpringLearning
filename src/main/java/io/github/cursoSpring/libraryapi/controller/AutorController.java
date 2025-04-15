@@ -1,7 +1,9 @@
 package io.github.cursoSpring.libraryapi.controller;
 
 import io.github.cursoSpring.libraryapi.controller.dto.AutorDTO;
+import io.github.cursoSpring.libraryapi.controller.dto.ErroCampo;
 import io.github.cursoSpring.libraryapi.controller.dto.ErroResposta;
+import io.github.cursoSpring.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.service.AutorService;
 import org.springframework.http.HttpStatus;
@@ -29,19 +31,24 @@ public class AutorController {
 
     @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> salvar(@RequestBody  AutorDTO autor){
+    public ResponseEntity<Object> salvar(@RequestBody  AutorDTO autor) {
 
-        var autorEntidade = autor.mapearParaAutor();
-        service.salvar(autorEntidade);
+        try {
+            Autor autorEntidade = autor.mapearParaAutor();
+            service.salvar(autorEntidade);
 
-        //http://localhost:8080/autores/USHDUdhKAKkajks
-        URI location =ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(autorEntidade.getId()).toUri();
-        return ResponseEntity.created(location).build();
-        //ErroResposta erro = ErroResposta.conflito("Autor já cadastrado!");
-        //return ResponseEntity.status(erro.status().body(erro));
+            //http://localhost:8080/autores/USHDUdhKAKkajks
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(autorEntidade.getId()).toUri();
+            return ResponseEntity.created(location).build();
+            //ErroResposta erro = ErroResposta.conflito("Autor já cadastrado!");
+            //return ResponseEntity.status(erro.status().body(erro));
+        } catch (RegistroDuplicadoException e){
+            var erroDto = ErroResposta.conflito(e.getMessage());
+            return ResponseEntity.status(erroDto.status()).body(erroDto);
+        }
     }
 
     @GetMapping("{id}")
