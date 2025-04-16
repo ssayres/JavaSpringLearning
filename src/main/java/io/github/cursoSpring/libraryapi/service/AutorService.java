@@ -1,7 +1,9 @@
 package io.github.cursoSpring.libraryapi.service;
 
+import io.github.cursoSpring.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.repository.AutorRepository;
+import io.github.cursoSpring.libraryapi.repository.LivroRepository;
 import io.github.cursoSpring.libraryapi.validator.AutorValidator;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ public class AutorService {
 
     private final AutorRepository repository;
     private final AutorValidator validator ;
+    private final LivroRepository livroRepository;
 
-    public AutorService(AutorRepository repository, AutorValidator validator){
+    public AutorService(AutorRepository repository, AutorValidator validator, LivroRepository livroRepository){
         this.repository = repository;
         this.validator = validator;
+        this.livroRepository = livroRepository;
     }
 
     public Autor salvar(Autor autor){
@@ -30,6 +34,10 @@ public class AutorService {
     }
 
     public void deletar(Autor autor){
+        if(possuiLivro(autor)){
+            throw new OperacaoNaoPermitidaException("Autor não é permitido excluir um Autor que livros cadastrados!");
+        }
+
         repository.delete(autor);
     }
 
@@ -55,6 +63,10 @@ public class AutorService {
         }
         validator.validar(autor);
         repository.save(autor);
+    }
+
+    public boolean possuiLivro(Autor autor){
+        return livroRepository.existsByAutor(autor);
     }
 
 }

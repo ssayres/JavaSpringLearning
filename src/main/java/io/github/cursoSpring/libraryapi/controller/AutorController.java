@@ -3,6 +3,7 @@ package io.github.cursoSpring.libraryapi.controller;
 import io.github.cursoSpring.libraryapi.controller.dto.AutorDTO;
 import io.github.cursoSpring.libraryapi.controller.dto.ErroCampo;
 import io.github.cursoSpring.libraryapi.controller.dto.ErroResposta;
+import io.github.cursoSpring.libraryapi.exceptions.OperacaoNaoPermitidaException;
 import io.github.cursoSpring.libraryapi.exceptions.RegistroDuplicadoException;
 import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.service.AutorService;
@@ -67,15 +68,21 @@ public class AutorController {
         return ResponseEntity.notFound().build();
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deletar(@PathVariable("id") String id){
-        var idAutor = UUID.fromString(id);
-        Optional<Autor> autorOptional = service.obterPorId(idAutor);
+    public ResponseEntity<Object> deletar(@PathVariable("id") String id){
+        try {
+            var idAutor = UUID.fromString(id);
+            Optional<Autor> autorOptional = service.obterPorId(idAutor);
 
-        if(autorOptional.isEmpty()){
-            return ResponseEntity.notFound().build();
+            if (autorOptional.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            service.deletar(autorOptional.get());
+            return ResponseEntity.noContent().build();
+
+        }catch (OperacaoNaoPermitidaException e){
+            var erroReposta = ErroResposta.respostaPadrao(e.getMessage());
+            return ResponseEntity.status(erroReposta.status()).body(erroReposta);
         }
-        service.deletar(autorOptional.get());
-        return  ResponseEntity.noContent().build();
     }
 
     @GetMapping

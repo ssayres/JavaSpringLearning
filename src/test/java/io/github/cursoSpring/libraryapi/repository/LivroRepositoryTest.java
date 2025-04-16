@@ -40,7 +40,7 @@ class LivroRepositoryTest {
 
 
 
-        Autor autor = autorRepository.findById(UUID.fromString("ca126cb3-2f71-40c6-87fe-45cf949b3d7f")).orElse(null);
+        Autor autor = autorRepository.findById(UUID.fromString("abd7ed1d-4a3a-4ffa-81ff-d200237a0090")).orElse(null);
         livro.setAutor(autor);
 
         repository.save(livro);
