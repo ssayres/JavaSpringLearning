@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import jakarta.*;
 
 @RestController
 @RequestMapping("autores")
@@ -28,7 +29,7 @@ public class AutorController {
 
     @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> salvar(@RequestBody  AutorDTO autor){
+    public ResponseEntity<Void> salvar(@RequestBody @Valid  AutorDTO autor){
 
         var autorEntidade = autor.mapearParaAutor();
         service.salvar(autorEntidade);

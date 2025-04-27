@@ -7,8 +7,13 @@ import java.util.UUID;
 
 public record AutorDTO(
         UUID id,
-        String nome,
+        @NotBlank(message = "campo obrigatório")
+        String nome, // notação do jakarta validation
+
+         @NotNull(message = "campo obrigatório")
          LocalDate dataNascimento,
+
+         @NotBlank(message = "campo obrigatório")
          String nacionalidade
 ) {
 
