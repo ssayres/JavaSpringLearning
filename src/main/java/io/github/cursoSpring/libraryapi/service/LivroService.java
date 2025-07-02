@@ -1,14 +1,17 @@
 package io.github.cursoSpring.libraryapi.service;
 
-
 import io.github.cursoSpring.libraryapi.repository.LivroRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
-
 public class LivroService {
 
     private final LivroRepository repository;
+
+    // Construtor manual
+    public LivroService(LivroRepository repository) {
+        this.repository = repository;
+    }
+
+    // Adicione aqui os métodos que usarem o repository
 }
