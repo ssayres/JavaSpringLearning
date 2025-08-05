@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 // host = http://localhost:8080/autores
 
 @RequiredArgsConstructor
-public class AutorController {
+public class AutorController implements GenericController {
 
     private final AutorService service;
     private final AutorMapper mapper;
@@ -48,11 +48,7 @@ public class AutorController {
             service.salvar(autor);
 
             //http://localhost:8080/autores/USHDUdhKAKkajks
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(autor.getId()).toUri();
-            return ResponseEntity.created(location).build();
+            URI location = gerarHeaderLocation(autor.getId());
             //ErroResposta erro = ErroResposta.conflito("Autor já cadastrado!");
             //return ResponseEntity.status(erro.status().body(erro));
         } catch (RegistroDuplicadoException e){
