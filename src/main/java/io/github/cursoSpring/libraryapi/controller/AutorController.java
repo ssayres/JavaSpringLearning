@@ -41,24 +41,23 @@ public class AutorController implements GenericController {
 
     @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Object> salvar(@RequestBody @Valid AutorDTO dto) {
+    public ResponseEntity<Void> salvar(@RequestBody @Valid AutorDTO dto) {
 
-        try {
-            Autor autor = mapper.toEntity(dto);
-            service.salvar(autor);
 
-            //http://localhost:8080/autores/USHDUdhKAKkajks
-            URI location = gerarHeaderLocation(autor.getId());
-            //ErroResposta erro = ErroResposta.conflito("Autor já cadastrado!");
-            //return ResponseEntity.status(erro.status().body(erro));
-        } catch (RegistroDuplicadoException e){
-            var erroDto = ErroResposta.conflito(e.getMessage());
-            return ResponseEntity.status(erroDto.status()).body(erroDto);
-        }
+        Autor autor = mapper.toEntity(dto);
+        service.salvar(autor);
+        URI location = gerarHeaderLocation(autor.getId());
+        return ResponseEntity.created(location).build();
+
+        //http://localhost:8080/autores/USHDUdhKAKkajks
+
+        //ErroResposta erro = ErroResposta.conflito("Autor já cadastrado!");
+        //return ResponseEntity.status(erro.status().body(erro));
+
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id){
+    public ResponseEntity<AutorDTO> obterDetalhes(@PathVariable("id") String id) {
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = service.obterPorId(idAutor);
 
@@ -66,7 +65,7 @@ public class AutorController implements GenericController {
                 .map(autor -> {
                     AutorDTO dto = mapper.toDto(autor);
                     return ResponseEntity.ok(dto);
-                }).orElseGet(()->ResponseEntity.notFound().build());
+                }).orElseGet(() -> ResponseEntity.notFound().build());
 //        if(autorOptional.isPresent()){
 //            Autor autor = autorOptional.get();
 //            AutorDTO dto = mapper.toDto(autor);
@@ -75,26 +74,24 @@ public class AutorController implements GenericController {
 //
 //        return ResponseEntity.notFound().build();
     }
+
     @DeleteMapping("{id}")
-    public ResponseEntity<Object> deletar(@PathVariable("id") String id){
-        try {
-            var idAutor = UUID.fromString(id);
-            Optional<Autor> autorOptional = service.obterPorId(idAutor);
+    public ResponseEntity<Void> deletar(@PathVariable("id") String id) {
 
-            if (autorOptional.isEmpty()) {
-                return ResponseEntity.notFound().build();
-            }
-            service.deletar(autorOptional.get());
-            return ResponseEntity.noContent().build();
+        var idAutor = UUID.fromString(id);
+        Optional<Autor> autorOptional = service.obterPorId(idAutor);
 
-        }catch (OperacaoNaoPermitidaException e){
-            var erroReposta = ErroResposta.respostaPadrao(e.getMessage());
-            return ResponseEntity.status(erroReposta.status()).body(erroReposta);
+        if (autorOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+        service.deletar(autorOptional.get());
+        return ResponseEntity.noContent().build();
+
+
     }
 
     @GetMapping
-    public ResponseEntity<List<AutorDTO>> pesquisar(@RequestParam(value = "nome", required = false) String nome, @RequestParam(value = "nacionalidade", required = false) String nacionalidade){
+    public ResponseEntity<List<AutorDTO>> pesquisar(@RequestParam(value = "nome", required = false) String nome, @RequestParam(value = "nacionalidade", required = false) String nacionalidade) {
         List<Autor> resultado = service.pesquisaByExample(nome, nacionalidade);
         List<AutorDTO> lista = resultado
                 .stream().map(mapper::toDto)
@@ -103,11 +100,11 @@ public class AutorController implements GenericController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto){
+    public ResponseEntity<Void> atualizar(@PathVariable("id") String id, @RequestBody @Valid AutorDTO dto) {
         var idAutor = UUID.fromString(id);
         Optional<Autor> autorOptional = service.obterPorId(idAutor);
 
-        if(autorOptional.isEmpty()){
+        if (autorOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -119,7 +116,6 @@ public class AutorController implements GenericController {
 
         return ResponseEntity.noContent().build();
     }
-
 
 
 }
