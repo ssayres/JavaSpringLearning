@@ -80,4 +80,5 @@ public interface LivroRepository extends JpaRepository<Livro, UUID> { // alt + E
     void atualizarDataPublicacao(LocalDate novaData);
 
 
+
 }
