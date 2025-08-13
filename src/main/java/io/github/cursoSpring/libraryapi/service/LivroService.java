@@ -30,6 +30,7 @@ public class LivroService {
     // Adicione aqui os métodos que usarem o repository
 
     public void deletar(Livro livro){
+
         repository.delete(livro);
     }
 
