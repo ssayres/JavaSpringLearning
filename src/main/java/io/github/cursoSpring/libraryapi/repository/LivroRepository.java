@@ -4,6 +4,8 @@ import io.github.cursoSpring.libraryapi.model.Autor;
 import io.github.cursoSpring.libraryapi.model.GeneroLivro;
 import io.github.cursoSpring.libraryapi.model.Livro;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +15,7 @@ import org.springframework.data.repository.query.Param;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -20,8 +23,12 @@ import java.util.UUID;
  */
 
 public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecificationExecutor<Livro> { // alt + Enter para criar classe de testes
-        //Query Method
 
+
+
+    Page<Livro> findbyAutor(Autor autor,Pageable pageable);
+
+    //Query Method
     // select * from livro where id_autor = id
     // Melhor forma de carregar - Não utilize EAGER
     List<Livro> findByAutor(Autor autor);
@@ -30,7 +37,7 @@ public interface LivroRepository extends JpaRepository<Livro, UUID>, JpaSpecific
     List<Livro> findByTitulo(String titulo);
 
     // select * from livro where isbn = ?
-    List<Livro> findByIsbn(String isbn);
+    Optional<Livro> findByIsbn(String isbn);
 
     // select * from livro where titulo = ? and preco = ?
     List<Livro> findByTituloAndPreco(String titulo, BigDecimal preco);

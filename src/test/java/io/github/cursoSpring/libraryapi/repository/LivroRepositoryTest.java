@@ -138,8 +138,8 @@
 //    }
 //    @Test
 //    void pesquisarPorIsbnTest(){
-//        List<Livro> lista = repository.findByIsbn("98887-84875");
-//        lista.forEach(System.out::println);
+//        Optional<Livro> livro = repository.findByIsbn("98887-84875");
+//        livro.ifPresent(System.out::println);
 //    }
 //
 //    @Test

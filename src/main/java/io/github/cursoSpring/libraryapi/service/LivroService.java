@@ -4,7 +4,11 @@ import io.github.cursoSpring.libraryapi.model.GeneroLivro;
 import io.github.cursoSpring.libraryapi.model.Livro;
 import io.github.cursoSpring.libraryapi.repository.LivroRepository;
 import io.github.cursoSpring.libraryapi.repository.specs.LivroSpecs.*;
+import io.github.cursoSpring.libraryapi.validator.LivroValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +18,17 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static io.github.cursoSpring.libraryapi.repository.specs.LivroSpecs.*;
+import static org.springframework.data.domain.PageRequest.*;
 
 @Service
 @RequiredArgsConstructor
 public class LivroService {
 
     private final LivroRepository repository;
-
-    // Construtor manual
-//    public LivroService(LivroRepository repository) {
-//        this.repository = repository;
-//    }
+    private final LivroValidator validator;
 
     public Livro salvar(Livro livro) {
+        validator.validar(livro);
         return repository.save(livro);
     }
 
@@ -34,45 +36,63 @@ public class LivroService {
         return repository.findById(id);
     }
 
-    // Adicione aqui os métodos que usarem o repository
-
     public void deletar(Livro livro){
-
         repository.delete(livro);
     }
 
-    //isbn, titulo, nome autor, genero, ano de publicacao
-    public List<Livro> pesquisa(String isbn, String titulo, String nomeAutor, GeneroLivro genero, Integer dataPublicacao){
+    //isbn, titulo, nome autor, genero, ano de publicação
+    public Page<Livro> pesquisa(
+            String isbn,
+            String titulo,
+            String nomeAutor,
+            GeneroLivro genero,
+            Integer anoPublicacao,
+            Integer pagina,
+            Integer tamanhoPagina){
 
+        // select * from livro where isbn = :isbn and nomeAutor =
 
-        // select + from livro where isbn = :isbn and nomeAutor =
+//        Specification<Livro> specs = Specification
+//                .where(LivroSpecs.isbnEqual(isbn))
+//                .and(LivroSpecs.tituloLike(titulo))
+//                .and(LivroSpecs.generoEqual(genero))
+//                ;
 
-//        Specification<Livro> specs = Specification.where(LivroSpecs.isbnEquals(isbn)).and(LivroSpecs.tituloLike(titulo)
-//                .and(LivroSpecs.generoEquals(genero)));
+        // select * from livro where 0 = 0
+        Specification<Livro> specs = Specification.where((root, query, cb) -> cb.conjunction() );
 
-        // select * from Livro where 0 = 0 / mesma coisa que onde é verdadeiro
-        Specification<Livro> specs = Specification.where((root, query, criteriaBuilder) -> criteriaBuilder.conjunction());
-
-        if( isbn != null ){
-            // query = :query and isbn = :isbn
+        if(isbn != null){
+            // query = query and isbn = :isbn
             specs = specs.and(isbnEquals(isbn));
         }
-        if( titulo != null ){
+
+        if(titulo != null){
             specs = specs.and(tituloLike(titulo));
         }
 
-        if( titulo != null){
-
-            specs = specs.and(tituloLike(titulo));
-
-        } if( genero != null ){
+        if(genero != null){
             specs = specs.and(generoEquals(genero));
         }
 
-        return repository.findAll(isbnEquals(isbn));
+        if(anoPublicacao != null){
+            specs = specs.and(anoPublicacaoEquals(anoPublicacao));
+        }
 
+        if(nomeAutor != null){
+            specs = specs.and(nomeAutorLike(nomeAutor));
+        }
+
+        Pageable pageRequest = PageRequest.of(pagina, tamanhoPagina);
+
+        return repository.findAll(specs, pageRequest);
     }
 
+    public void atualizar(Livro livro) {
+        if(livro.getId() == null){
+            throw new IllegalArgumentException("Para atualizar, é necessário que o livro já esteja salvo na base.");
+        }
 
-
+        validator.validar(livro);
+        repository.save(livro);
+    }
 }
